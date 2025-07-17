@@ -2,9 +2,9 @@
 
 A collection of casino-style mini games written in C for educational purposes about gambling addiction prevention, featuring player authentication, betting systems, comprehensive record keeping, and educational gambling prevention warnings.
 
-## 📋 필수 기능 구현 현황
+## 필수 기능 구현 현황
 
-### ✅ 필수 기능
+### 필수 기능
 - **구조체 사용**: Player, RouletteGame, HighScoreRecord, SlotResult 등 다양한 구조체 활용
 - **동적 메모리 사용**: SlotResult 구조체의 동적 할당/해제 (malloc, free)
 - **데이터 입력/출력**: 사용자 입력 처리, 게임 결과 출력, 메뉴 시스템
@@ -12,7 +12,7 @@ A collection of casino-style mini games written in C for educational purposes ab
 - **검색 기능**: 사용자 인증 시스템에서 닉네임 검색, 하이스코어 보드에서 닉네임별 기록 검색
 - **메뉴 제공**: 각 게임별 상세 메뉴 시스템 및 네비게이션
 
-### ✅ 부가 기능 (가산점)
+### 부가 기능 (가산점)
 - **파일 기반 데이터 관리**: CSV 파일을 통한 모든 데이터 읽기/쓰기 처리
 - **보안**: SHA256 해시를 이용한 패스워드 암호화
 - **페이지네이션**: 하이스코어 보드의 페이지 단위 데이터 표시
