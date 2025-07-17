@@ -20,7 +20,7 @@
 #include "auth.h"
 
 #define MAX_PASS_LEN 50                    // 패스워드 최대 길이
-#define USER_FILE "../data/users.csv"      // 부가 기능: 파일로 사용자 데이터 관리
+#define USER_FILE "data/users.csv"          // 부가 기능: 파일로 사용자 데이터 관리
 
 /*
  * ============================================================================

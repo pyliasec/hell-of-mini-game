@@ -1,26 +1,30 @@
 /*
  * ============================================================================
  * 파일명: main.c
- * 설명: Hell of Mini Game 메인 실행 파일
+ * 설명: 도박 중독 예방 교육용 게임 시뮬레이션
  * 작성자: pyliasec
  * 작성일: 2025-07-17
  * 
- * 프로그램 개요:
- * - 카지노 스타일 미니게임 모음집
- * - 사용자 인증, 코인 시스템, 게임 기록 관리 포함
- * - 슬롯머신, 룰렛, 경마, 가위바위보 게임 제공
+ * 프로그램 목적:
+ * - 도박의 위험성과 중독성을 체험할 수 있는 교육적 시뮬레이션
+ * - 확률과 손실에 대한 현실적 이해 제공
+ * - 건전한 여가 생활의 중요성 인식 도모
+ * 
+ * 주의: 이 프로그램은 실제 도박을 권장하지 않으며,
+ *          도박 중독 예방을 위한 교육 목적으로만 제작되었습니다.
  * ============================================================================
  */
 
 #include <stdio.h>
 #include <string.h>
-#include "auth.h"         // 사용자 인증 시스템
-#include "player.h"       // 플레이어 데이터 관리
-#include "rock.h"         // 가위바위보 게임
-#include "horse_racing.h" // 경마 게임
-#include "slot_machine.h" // 슬롯머신 게임
-#include "roulette.h"     // 룰렛 게임
-#include "highscore.h"    // 하이스코어 보드
+#include "auth.h"              // 사용자 인증 시스템
+#include "player.h"            // 플레이어 데이터 관리
+#include "rock.h"              // 가위바위보 게임
+#include "horse_racing.h"      // 경마 게임
+#include "slot_machine.h"      // 슬롯머신 게임
+#include "roulette.h"          // 룰렛 게임
+#include "highscore.h"         // 하이스코어 보드
+#include "gambling_prevention.h" // 도박 예방 시스템
 
 /*
  * ============================================================================
@@ -48,6 +52,10 @@ void showMenu() {
  * ============================================================================
  */
 int main() {
+    // 프로그램 시작 시 교육적 목적 설명
+    showProjectPurpose();
+    showGamblingPreventionMessage();
+    
     Player player;  // 필수 기능: 구조체 사용
     char nickname[MAX_NAME_LEN] = "";
     int authChoice;

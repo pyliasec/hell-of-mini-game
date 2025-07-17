@@ -22,7 +22,7 @@
  * 플레이어 데이터 파일 경로
  * ============================================================================
  */
-#define SAVE_FILE "../data/players.csv"
+#define SAVE_FILE "data/players.csv"
 
 /*
  * ============================================================================
@@ -39,7 +39,7 @@
  * ============================================================================
  */
 int loadPlayer(Player* p, const char* name) {
-    FILE* file = fopen("../data/players.csv", "r");
+    FILE* file = fopen("data/players.csv", "r");
     if (!file) {
         strcpy(p->nickname, name);
         p->coins = 100;
@@ -68,7 +68,7 @@ int loadPlayer(Player* p, const char* name) {
 
 void savePlayer(const Player* p) {
     FILE* input = fopen(SAVE_FILE, "r");
-    FILE* temp = fopen("../data/temp.csv", "w");
+    FILE* temp = fopen("data/temp.csv", "w");
     int found = 0;
     char line[100];
 
@@ -92,7 +92,7 @@ void savePlayer(const Player* p) {
 
     fclose(temp);
     remove(SAVE_FILE);
-    rename("../data/temp.csv", SAVE_FILE);
+    rename("data/temp.csv", SAVE_FILE);
 }
 
 void printPlayerInfo(const Player* p) {

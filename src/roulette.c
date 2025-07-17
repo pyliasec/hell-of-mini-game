@@ -4,8 +4,11 @@
 #include <time.h>
 #include "player.h"
 #include "roulette.h"
+#include "gambling_prevention.h"
 
-#define HISTORY_FILE "../data/roulette_history.csv"
+#define HISTORY_FILE "data/roulette_history.csv"
+#define MIN_MULTIPLIER 0.1    // 최소 배율
+#define MAX_MULTIPLIER 10.0   // 최대 배율
 
 const char* colorToStr(Color c) {
     return c == RED ? "빨강" : c == BLACK ? "검정" : "초록";
@@ -43,11 +46,14 @@ void startRouletteGame(const char* playerName, int* playerCoins) {
                 continue;
             }
 
+            // 게임 시작 전 코인 저장 (손실 체크용)
+            int previousCoins = *playerCoins;
+
             // 배율 입력받기
             float multiplier;
-            printf("\n배율을 입력하세요 (예: 1.5, 2.0, 0.5): ");
-            while (scanf("%f", &multiplier) != 1 || multiplier <= 0) {
-                printf("올바른 배율을 입력하세요 (양수): ");
+            printf("\n배율을 입력하세요 (%.1f ~ %.1f): ", MIN_MULTIPLIER, MAX_MULTIPLIER);
+            while (scanf("%f", &multiplier) != 1 || multiplier < MIN_MULTIPLIER || multiplier > MAX_MULTIPLIER) {
+                printf("올바른 배율을 입력하세요 (%.1f ~ %.1f): ", MIN_MULTIPLIER, MAX_MULTIPLIER);
                 while (getchar() != '\n'); // 입력 버퍼 클리어
             }
 
@@ -87,12 +93,12 @@ void startRouletteGame(const char* playerName, int* playerCoins) {
             if (game.chosenNumber == resultNum) {
                 // 숫자 일치 시 설정된 배율 적용
                 payout = (int)(game.betAmount * multiplier * 36);
-                printf("🎯 숫자 일치! 배율 %.1fx 적용 → +%d 코인\n", multiplier, payout);
+                printf("숫자 일치! 배율 %.1fx 적용 -> +%d 코인\n", multiplier, payout);
             } else if (game.chosenColor == resultColor) {
                 // 색상 일치 시 설정된 배율 적용
                 int baseMultiplier = (resultColor == GREEN ? 10 : 2);
                 payout = (int)(game.betAmount * multiplier * baseMultiplier);
-                printf("🎨 색상 일치! 배율 %.1fx 적용 → +%d 코인\n", multiplier, payout);
+                printf("색상 일치! 배율 %.1fx 적용 -> +%d 코인\n", multiplier, payout);
             } else {
                 printf("꽝! 배팅한 %d 코인 손실\n", game.betAmount);
             }
@@ -101,6 +107,16 @@ void startRouletteGame(const char* playerName, int* playerCoins) {
             printf("현재 잔액: %d\n", *playerCoins);
 
             saveGameResult(playerName, resultNum, resultColor, game.betAmount, payout);
+            
+            // 게임이 완전히 끝난 후 손실 체크
+            if (payout == 0) {
+                checkMajorLoss(previousCoins, *playerCoins, playerName);
+            }
+            
+            // 게임이 완전히 끝난 후 파산 상태 체크 (10개 이하)
+            if (*playerCoins <= 10) {
+                checkBankruptcy(*playerCoins, playerName);
+            }
         } else if (menu == 2) {
             printf("현재 잔액: %d\n", *playerCoins);
         } else if (menu == -1) {

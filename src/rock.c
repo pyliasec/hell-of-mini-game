@@ -3,10 +3,13 @@
 #include <time.h>
 #include <string.h>
 #include "player.h"
+#include "gambling_prevention.h"
 
-#define RECORD_FILE "../data/rock_records.csv"
+#define RECORD_FILE "data/rock_records.csv"
 #define MIN_BET 5
 #define MAX_BET 500
+#define MIN_MULTIPLIER 0.1    // 최소 배율
+#define MAX_MULTIPLIER 10.0   // 최대 배율
 
 // 함수 프로토타입
 void rockPaperScissorsMenu(const char* nickname, int* coins);
@@ -49,16 +52,19 @@ void rockPaperScissorsMenu(const char* nickname, int* coins) {
 void startRockPaperScissorsGame(const char* nickname, int* coins) {
     srand((unsigned)time(NULL));
     
-    // 배율 입력받기
-    float multiplier;
-    printf("\n배율을 입력하세요 (예: 1.5, 2.0, 0.5): ");
-    while (scanf("%f", &multiplier) != 1 || multiplier <= 0) {
-        printf("올바른 배율을 입력하세요 (양수): ");
-        while (getchar() != '\n'); // 입력 버퍼 클리어
-    }
+    // 게임 시작 전 코인 저장 (손실 체크용)
+    int previousCoins = *coins;
     
     int bet = getBetAmount(coins);
     if (bet == 0) return;
+    
+    // 배율 입력받기
+    float multiplier;
+    printf("\n배율을 입력하세요 (%.1f ~ %.1f): ", MIN_MULTIPLIER, MAX_MULTIPLIER);
+    while (scanf("%f", &multiplier) != 1 || multiplier < MIN_MULTIPLIER || multiplier > MAX_MULTIPLIER) {
+        printf("올바른 배율을 입력하세요 (%.1f ~ %.1f): ", MIN_MULTIPLIER, MAX_MULTIPLIER);
+        while (getchar() != '\n'); // 입력 버퍼 클리어
+    }
     
     int user, computer;
     printf("\n가위(1), 바위(2), 보(3) 중 하나를 선택하세요: ");
@@ -92,18 +98,28 @@ void startRockPaperScissorsGame(const char* nickname, int* coins) {
              (user == 3 && computer == 2)) {
         // 승리 시 설정된 배율 적용
         winAmount = (int)(bet * multiplier * 2);
-        printf("🏆 승리! 배율 %.1fx 적용 → +%d 코인\n", multiplier, winAmount);
+        printf("승리! 배율 %.1fx 적용 -> +%d 코인\n", multiplier, winAmount);
         result = 1;
         *coins += winAmount;
     }
     else {
-        printf("💸 패배! 베팅 금액을 잃었습니다.\n");
+        printf("패배! 베팅 금액을 잃었습니다.\n");
         result = 2;
         winAmount = 0;
     }
     
     printf("현재 코인: %d\n", *coins);
     saveRockRecord(nickname, bet, user, computer, result, winAmount);
+    
+    // 게임 후 손실 체크
+    if (result == 2) { // 패배 시
+        checkMajorLoss(previousCoins, *coins, nickname);
+    }
+    
+    // 파산 상태 재체크 (10 코인 이하일 때)
+    if (*coins <= 10) {
+        checkBankruptcy(*coins, nickname);
+    }
 }
 
 void printChoice(int choice) {

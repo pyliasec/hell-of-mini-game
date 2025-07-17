@@ -18,11 +18,14 @@
 #include <time.h>
 #include <string.h>
 #include "player.h"
+#include "gambling_prevention.h"
 
 #define NUM_SYMBOLS 6         // 심볼 종류 개수
 #define MIN_BET      5        // 최소 베팅 금액
 #define MAX_BET   1000        // 최대 베팅 금액
-#define RECORD_FILE "../data/slot_records.csv"  // 부가 기능: 파일로 데이터 관리
+#define MIN_MULTIPLIER 0.1    // 최소 배율
+#define MAX_MULTIPLIER 10.0   // 최대 배율
+#define RECORD_FILE "data/slot_records.csv"  // 부가 기능: 파일로 데이터 관리
 
 /*
  * ============================================================================
@@ -95,11 +98,14 @@ void slotMachineMenu(const char* nickname, int* coins) {
 void startSlotMachineGame(const char* nickname, int* coins) {
     srand((unsigned)time(NULL));
     
+    // 게임 시작 전 코인 저장 (손실 체크용)
+    int previousCoins = *coins;
+    
     // 배율 입력받기
     float multiplier;
-    printf("\n배율을 입력하세요 (예: 1.5, 2.0, 0.5): ");
-    while (scanf("%f", &multiplier) != 1 || multiplier <= 0) {
-        printf("올바른 배율을 입력하세요 (양수): ");
+    printf("\n배율을 입력하세요 (%.1f ~ %.1f): ", MIN_MULTIPLIER, MAX_MULTIPLIER);
+    while (scanf("%f", &multiplier) != 1 || multiplier < MIN_MULTIPLIER || multiplier > MAX_MULTIPLIER) {
+        printf("올바른 배율을 입력하세요 (%.1f ~ %.1f): ", MIN_MULTIPLIER, MAX_MULTIPLIER);
         while (getchar() != '\n'); // 입력 버퍼 클리어
     }
     
@@ -116,7 +122,7 @@ void startSlotMachineGame(const char* nickname, int* coins) {
         if (result[0] == result[1] && result[1] == result[2]) {
             // 3개 일치 시 설정된 배율 적용
             winAmount = (int)(bet * multiplier * payout3[result[0]]);
-            printf("🎰 3개 일치! 배율 %.1fx 적용 → +%d 코인\n", multiplier, winAmount);
+            printf("3개 일치! 배율 %.1fx 적용 -> +%d 코인\n", multiplier, winAmount);
             *coins += winAmount;
         }
         else if (result[0] == result[1] || result[1] == result[2] || result[0] == result[2]) {
@@ -125,7 +131,7 @@ void startSlotMachineGame(const char* nickname, int* coins) {
                 : result[0]);
             // 2개 일치 시 설정된 배율 적용
             winAmount = (int)(bet * multiplier * payout2[idx]);
-            printf("✨ 2개 일치! 배율 %.1fx 적용 → +%d 코인\n", multiplier, winAmount);
+            printf("2개 일치! 배율 %.1fx 적용 -> +%d 코인\n", multiplier, winAmount);
             *coins += winAmount;
         }
         else {
@@ -134,6 +140,16 @@ void startSlotMachineGame(const char* nickname, int* coins) {
         
         printf("현재 코인: %d\n", *coins);
         saveSlotRecord(nickname, bet, result[0], result[1], result[2], winAmount);
+        
+        // 게임 후 손실 체크
+        if (winAmount == 0) {
+            checkMajorLoss(previousCoins, *coins, nickname);
+        }
+        
+        // 파산 상태 재체크 (10 코인 이하일 때)
+        if (*coins <= 10) {
+            checkBankruptcy(*coins, nickname);
+        }
     }
 }
 

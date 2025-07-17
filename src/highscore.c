@@ -27,10 +27,10 @@
  * ============================================================================
  */
 const char* gameFiles[] = {
-    "../data/slot_records.csv",     // 슬롯머신 기록
-    "../data/horse_records.csv",    // 경마 기록
-    "../data/rock_records.csv",     // 가위바위보 기록
-    "../data/roulette_history.csv"  // 룰렛 기록
+    "data/slot_records.csv",     // 슬롯머신 기록
+    "data/horse_records.csv",    // 경마 기록
+    "data/rock_records.csv",     // 가위바위보 기록
+    "data/roulette_history.csv"  // 룰렛 기록
 };
 
 const char* gameNames[] = {
@@ -141,7 +141,7 @@ void showGameHighScores(const char* gameName) {
 }
 
 int loadSlotRecords(HighScoreRecord records[], int maxRecords) {
-    FILE* f = fopen("../data/slot_records.csv", "r");
+    FILE* f = fopen("data/slot_records.csv", "r");
     if (!f) return 0;
     
     char line[256];
@@ -166,7 +166,7 @@ int loadSlotRecords(HighScoreRecord records[], int maxRecords) {
 }
 
 int loadHorseRecords(HighScoreRecord records[], int maxRecords) {
-    FILE* f = fopen("../data/horse_records.csv", "r");
+    FILE* f = fopen("data/horse_records.csv", "r");
     if (!f) return 0;
     
     char line[256];
@@ -191,7 +191,7 @@ int loadHorseRecords(HighScoreRecord records[], int maxRecords) {
 }
 
 int loadRockRecords(HighScoreRecord records[], int maxRecords) {
-    FILE* f = fopen("../data/rock_records.csv", "r");
+    FILE* f = fopen("data/rock_records.csv", "r");
     if (!f) return 0;
     
     char line[256];
@@ -216,7 +216,7 @@ int loadRockRecords(HighScoreRecord records[], int maxRecords) {
 }
 
 int loadRouletteRecords(HighScoreRecord records[], int maxRecords) {
-    FILE* f = fopen("../data/roulette_history.csv", "r");
+    FILE* f = fopen("data/roulette_history.csv", "r");
     if (!f) return 0;
     
     char line[256];

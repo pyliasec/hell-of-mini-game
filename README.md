@@ -1,6 +1,6 @@
 # Hell of Mini Game
 
-A collection of casino-style mini games written in C, featuring player authentication, betting systems, and comprehensive record keeping.
+A collection of casino-style mini games written in C for educational purposes about gambling addiction prevention, featuring player authentication, betting systems, comprehensive record keeping, and educational gambling prevention warnings.
 
 ## 📋 필수 기능 구현 현황
 
@@ -16,6 +16,8 @@ A collection of casino-style mini games written in C, featuring player authentic
 - **파일 기반 데이터 관리**: CSV 파일을 통한 모든 데이터 읽기/쓰기 처리
 - **보안**: SHA256 해시를 이용한 패스워드 암호화
 - **페이지네이션**: 하이스코어 보드의 페이지 단위 데이터 표시
+- **도박 예방 교육 시스템**: 큰 손실 및 파산 상황에서 교육적 경고 메시지 제공
+- **배율 시스템**: 모든 게임에서 0.1배~10.0배 사용자 정의 배율 설정 가능
 
 ## Project Structure
 
@@ -31,10 +33,10 @@ hell_of_mini_game/
 
 ## Games Included
 
-1. **Slot Machine** - Three-reel slot machine with weighted outcomes
-2. **Horse Racing** - Multi-horse racing simulation with betting
-3. **Roulette** - Color and number betting roulette game
-4. **Rock Paper Scissors** - Classic game with betting system
+1. **Slot Machine** - Three-reel slot machine with weighted outcomes and customizable multipliers
+2. **Horse Racing** - Multi-horse racing simulation with betting and multiplier system
+3. **Roulette** - Color and number betting roulette game with customizable risk levels
+4. **Rock Paper Scissors** - Classic game with betting system and multiplier options
 
 ## Features
 
@@ -43,6 +45,10 @@ hell_of_mini_game/
 - **Record Keeping**: All game results saved to CSV files
 - **High Score Board**: View records across all games with pagination
 - **Menu System**: Easy navigation between games and features
+- **Gambling Prevention Education**: Educational warnings and prevention messages
+- **Multiplier System**: Customizable risk levels (0.1x - 10.0x) for all games
+- **Loss Detection**: Automatic detection of major losses with educational feedback
+- **Bankruptcy Prevention**: Warning system when coins drop to critical levels (≤10)
 
 ## Building and Running
 
@@ -77,27 +83,36 @@ cd build && ./hellgame
 1. Register a new account or login with existing credentials
 2. Start with 1000 coins (default for new players)
 3. Choose a game from the main menu
-4. Place your bets and play!
+4. Set your desired multiplier (0.1x - 10.0x) for risk management
+5. Place your bets and play responsibly!
+
+**Educational Purpose**: This project serves as an educational tool to demonstrate the risks of gambling and promote responsible gaming practices.
 
 ### Slot Machine
 - Bet coins on three spinning reels
+- Set custom multiplier (0.1x - 10.0x) to control risk/reward
 - Match symbols for different payouts
 - Special combinations offer bonus multipliers
+- Educational warnings for consecutive losses
 
 ### Horse Racing
-- Choose from multiple horses
+- Choose from multiple horses with different odds
+- Set custom multiplier before placing bets
 - Place bets on your favorite
 - Watch the race simulation unfold
+- Learn about high-risk betting consequences
 
 ### Roulette
 - Bet on colors (red/black) or specific numbers
+- Customize your risk level with multiplier settings
 - Color bets pay 2:1, number bets pay 36:1
-- Simple and classic casino gameplay
+- Simple and classic casino gameplay with educational elements
 
 ### Rock Paper Scissors
 - Play against the computer
+- Set multiplier for increased stakes
 - Bet coins on the outcome
-- Best of luck strategy game
+- Educational tool for understanding probability and risk
 
 ## Data Files
 
@@ -114,9 +129,10 @@ The game automatically creates and manages these CSV files in the `data/` direct
 ### Code Organization
 - **Authentication**: `auth.c/h` - User registration and login
 - **Player Management**: `player.c/h` - Player data and persistence
-- **Games**: Individual `.c/.h` files for each game
+- **Games**: Individual `.c/.h` files for each game with multiplier systems
 - **High Scores**: `highscore.c/h` - Record viewing and pagination
-- **Main**: `main.c` - Menu system and game launcher
+- **Gambling Prevention**: `gambling_prevention.c/h` - Educational warnings and prevention system
+- **Main**: `main.c` - Menu system and game launcher with educational messaging
 
 ### Adding New Games
 1. Create new `.c` and `.h` files in respective directories
@@ -132,6 +148,28 @@ The game automatically creates and manages these CSV files in the `data/` direct
 - `make cleanall` - Remove all generated files including data
 - `make run` - Build and run the game
 - `make install-deps` - Install required dependencies (macOS)
+
+## Educational Purpose & Gambling Prevention
+
+This project was specifically designed as an **educational tool for gambling addiction prevention**. Key educational features include:
+
+### 🛡️ Prevention Systems
+- **Major Loss Detection**: Automatic alerts when significant losses occur
+- **Bankruptcy Warnings**: Critical alerts when coin balance drops to ≤10
+- **Educational Messaging**: Informative content about gambling risks and addiction
+- **Post-Game Timing**: Prevention messages appear after gameplay completion for maximum educational impact
+
+### 📚 Learning Objectives
+- Understanding the mathematical disadvantage in gambling
+- Recognizing patterns of addictive behavior
+- Learning about risk management and probability
+- Promoting responsible decision-making regarding gambling
+
+### 🎯 Target Audience
+- Students learning about probability and statistics
+- Individuals seeking to understand gambling risks
+- Educational institutions teaching about addiction prevention
+- Anyone interested in responsible gaming awareness
 
 ## License
 

@@ -4,9 +4,12 @@
 #include <time.h>
 #include <unistd.h>
 #include "player.h"
+#include "gambling_prevention.h"
 
 #define TRACK 20
-#define RECORD_FILE "../data/horse_records.csv"
+#define RECORD_FILE "data/horse_records.csv"
+#define MIN_MULTIPLIER 0.1
+#define MAX_MULTIPLIER 10.0
 
 // 함수 프로토타입
 void startHorseRacingGame(const char* nickname, int* coins);
@@ -16,7 +19,7 @@ void saveHorseRecord(const char* nickname, int betHorse, int betCoins, int resul
 void horseRacingMenu(const char* nickname, int* coins) {
     int choice = 0;
     while (choice != -1) {
-        printf("\n🏇 [경마 게임 메뉴] 🏇\n");
+        printf("\n[경마 게임 메뉴]\n");
         printf("1. 게임 시작\n");
         printf("2. 현재 코인 보기\n");
         printf("-1. 나가기\n");
@@ -69,13 +72,8 @@ void startHorseRacingGame(const char* nickname, int* coins) {
     double moveValue[4] = { 0 };
     int winner = 0;
 
-    // 배율 입력받기
-    float multiplier;
-    printf("\n배율을 입력하세요 (예: 1.5, 2.0, 0.5): ");
-    while (scanf("%f", &multiplier) != 1 || multiplier <= 0) {
-        printf("올바른 배율을 입력하세요 (양수): ");
-        while (getchar() != '\n'); // 입력 버퍼 클리어
-    }
+    // 게임 시작 전 코인 저장 (손실 체크용)
+    int previousCoins = *coins;
 
     printf("\n현재 코인: %d\n", *coins);
     printf("배팅할 코인을 입력하세요 (최소 5 ~ 최대 1000): ");
@@ -85,7 +83,15 @@ void startHorseRacingGame(const char* nickname, int* coins) {
         return;
     }
 
-    printf("🏇 배팅할 말 번호를 선택하세요 (1~3): ");
+    // 배율 입력받기
+    float multiplier;
+    printf("\n배율을 입력하세요 (%.1f ~ %.1f): ", MIN_MULTIPLIER, MAX_MULTIPLIER);
+    while (scanf("%f", &multiplier) != 1 || multiplier < MIN_MULTIPLIER || multiplier > MAX_MULTIPLIER) {
+        printf("올바른 배율을 입력하세요 (%.1f ~ %.1f): ", MIN_MULTIPLIER, MAX_MULTIPLIER);
+        while (getchar() != '\n'); // 입력 버퍼 클리어
+    }
+
+    printf("배팅할 말 번호를 선택하세요 (1~3): ");
     scanf("%d", &horseChoice);
     if (horseChoice < 1 || horseChoice > 3) {
         printf("유효하지 않은 말 번호입니다.\n");
@@ -119,7 +125,7 @@ void startHorseRacingGame(const char* nickname, int* coins) {
         usleep(200000);
     }
 
-    printf("🏁 %d번 말이 우승했습니다!\n", winner);
+    printf("%d번 말이 우승했습니다!\n", winner);
     int reward = 0;
     if (horseChoice == winner) {
         // 승리 시 설정된 배율 적용
@@ -129,11 +135,21 @@ void startHorseRacingGame(const char* nickname, int* coins) {
         else baseReward = 8 * betCoins;
         
         reward = (int)(baseReward * multiplier);
-        printf("🎉 축하합니다! 배율 %.1fx 적용 → +%d 코인 획득!\n", multiplier, reward);
+        printf("축하합니다! 배율 %.1fx 적용 -> +%d 코인 획득!\n", multiplier, reward);
         *coins += reward;
     } else {
         printf("아쉽게도 배팅 실패입니다. 코인을 잃었습니다.\n");
     }
 
     saveHorseRecord(nickname, horseChoice, betCoins, winner, reward);
+    
+    // 게임 후 손실 체크
+    if (reward == 0) {
+        checkMajorLoss(previousCoins, *coins, nickname);
+    }
+    
+    // 파산 상태 재체크 (10 코인 이하일 때)
+    if (*coins <= 10) {
+        checkBankruptcy(*coins, nickname);
+    }
 }

@@ -38,7 +38,7 @@ cleanall: clean
 
 # Run the game
 run: $(TARGET)
-	cd $(BUILD_DIR) && ./hellgame
+	./$(TARGET)
 
 # Install dependencies (macOS)
 install-deps:
