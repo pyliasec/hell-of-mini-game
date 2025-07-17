@@ -8,10 +8,10 @@
 
 // 모든 게임 기록 파일들
 const char* gameFiles[] = {
-    "slot_records.csv",
-    "horse_records.csv", 
-    "rock_records.csv",
-    "roulette_history.csv"
+    "../data/slot_records.csv",
+    "../data/horse_records.csv", 
+    "../data/rock_records.csv",
+    "../data/roulette_history.csv"
 };
 
 const char* gameNames[] = {
@@ -112,7 +112,7 @@ void showGameHighScores(const char* gameName) {
 }
 
 int loadSlotRecords(HighScoreRecord records[], int maxRecords) {
-    FILE* f = fopen("slot_records.csv", "r");
+    FILE* f = fopen("../data/slot_records.csv", "r");
     if (!f) return 0;
     
     char line[256];
@@ -137,7 +137,7 @@ int loadSlotRecords(HighScoreRecord records[], int maxRecords) {
 }
 
 int loadHorseRecords(HighScoreRecord records[], int maxRecords) {
-    FILE* f = fopen("horse_records.csv", "r");
+    FILE* f = fopen("../data/horse_records.csv", "r");
     if (!f) return 0;
     
     char line[256];
@@ -162,7 +162,7 @@ int loadHorseRecords(HighScoreRecord records[], int maxRecords) {
 }
 
 int loadRockRecords(HighScoreRecord records[], int maxRecords) {
-    FILE* f = fopen("rock_records.csv", "r");
+    FILE* f = fopen("../data/rock_records.csv", "r");
     if (!f) return 0;
     
     char line[256];
@@ -187,7 +187,7 @@ int loadRockRecords(HighScoreRecord records[], int maxRecords) {
 }
 
 int loadRouletteRecords(HighScoreRecord records[], int maxRecords) {
-    FILE* f = fopen("roulette_history.csv", "r");
+    FILE* f = fopen("../data/roulette_history.csv", "r");
     if (!f) return 0;
     
     char line[256];

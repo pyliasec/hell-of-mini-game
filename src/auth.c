@@ -6,7 +6,7 @@
 #include "auth.h"
 
 #define MAX_PASS_LEN 50
-#define USER_FILE "users.csv"
+#define USER_FILE "../data/users.csv"
 
 // SHA256 해시 함수
 void hashPassword(const char* password, char* hashOutput) {

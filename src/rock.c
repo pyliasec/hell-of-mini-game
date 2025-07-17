@@ -4,7 +4,7 @@
 #include <string.h>
 #include "player.h"
 
-#define RECORD_FILE "rock_records.csv"
+#define RECORD_FILE "../data/rock_records.csv"
 #define MIN_BET 5
 #define MAX_BET 500
 

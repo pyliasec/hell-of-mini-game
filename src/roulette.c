@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include "player.h"
 #include "roulette.h"
 
-#define HISTORY_FILE "roulette_history.csv"
+#define HISTORY_FILE "../data/roulette_history.csv"
 
 const char* colorToStr(Color c) {
     return c == RED ? "빨강" : c == BLACK ? "검정" : "초록";

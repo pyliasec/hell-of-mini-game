@@ -6,7 +6,7 @@
 #include "player.h"
 
 #define TRACK 20
-#define RECORD_FILE "horse_records.csv"
+#define RECORD_FILE "../data/horse_records.csv"
 
 // 함수 프로토타입
 void startHorseRacingGame(const char* nickname, int* coins);

@@ -8,7 +8,7 @@
 #define NUM_SYMBOLS 6
 #define MIN_BET      5
 #define MAX_BET   1000
-#define RECORD_FILE "slot_records.csv"
+#define RECORD_FILE "../data/slot_records.csv"
 
 const char* symbols[NUM_SYMBOLS] = { "♠", "♥", "◆", "★", "♣", "♡" };
 int weights[NUM_SYMBOLS] = { 30, 25, 20, 15, 7, 3 };
