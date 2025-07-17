@@ -132,7 +132,7 @@ int getBet(int* coins) {
     int bet;
     printf("\n현재 코인: %d\n", *coins);
     do {
-        printf("베팅 금액 (%d~%d) ▶ ", MIN_BET, MAX_BET);
+        printf("베팅 금액 (%d~%d) : ", MIN_BET, MAX_BET);
         if (scanf("%d", &bet) != 1) {
             while (getchar() != '\n');
             bet = 0;

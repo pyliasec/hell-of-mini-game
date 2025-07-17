@@ -55,6 +55,7 @@ int loadRouletteRecords(HighScoreRecord records[], int maxRecords);
 int loadAllRecords(HighScoreRecord records[], int maxRecords);
 void sortRecordsByWinAmount(HighScoreRecord records[], int count);
 void displayRecordsWithPagination(HighScoreRecord records[], int count, const char* title);
+void searchByNickname(void);  // 필수 기능: 검색 기능
 
 void showHighScoreMenu(void) {
     int choice = 0;
@@ -65,6 +66,7 @@ void showHighScoreMenu(void) {
         printf("3. 경마 하이스코어\n");
         printf("4. 가위바위보 하이스코어\n");
         printf("5. 룰렛 하이스코어\n");
+        printf("6. 닉네임별 검색\n");
         printf("-1. 나가기\n");
         printf("선택 >> ");
         
@@ -89,6 +91,9 @@ void showHighScoreMenu(void) {
                 break;
             case 5:
                 showGameHighScores("룰렛");
+                break;
+            case 6:
+                searchByNickname();
                 break;
             case -1:
                 printf("하이스코어 보드를 종료합니다.\n");
@@ -325,5 +330,60 @@ void displayRecordsWithPagination(HighScoreRecord records[], int count, const ch
             printf("계속하려면 Enter를 누르세요...");
             while (getchar() != '\n');
         }
+    }
+}
+
+/*
+ * ============================================================================
+ * 필수 기능: 검색 기능
+ * 닉네임을 입력받아 해당 닉네임의 모든 게임 기록을 검색하여 표시
+ * ============================================================================
+ */
+void searchByNickname(void) {
+    char searchNickname[50];
+    printf("\n검색할 닉네임을 입력하세요: ");
+    scanf("%49s", searchNickname);
+    
+    // 모든 게임 기록을 로드
+    HighScoreRecord allRecords[MAX_RECORDS];
+    int totalCount = loadAllRecords(allRecords, MAX_RECORDS);
+    
+    // 검색된 기록을 저장할 배열
+    HighScoreRecord searchResults[MAX_RECORDS];
+    int foundCount = 0;
+    
+    // 닉네임이 정확히 일치하는 기록만 검색
+    for (int i = 0; i < totalCount; i++) {
+        if (strcmp(allRecords[i].nickname, searchNickname) == 0) {
+            searchResults[foundCount] = allRecords[i];
+            foundCount++;
+        }
+    }
+    
+    // 검색 결과 출력
+    if (foundCount > 0) {
+        // 검색된 기록을 획득 금액 기준으로 정렬
+        sortRecordsByWinAmount(searchResults, foundCount);
+        
+        char title[100];
+        sprintf(title, "%s님의 게임 기록", searchNickname);
+        displayRecordsWithPagination(searchResults, foundCount, title);
+        
+        // 통계 정보 출력
+        int totalBet = 0, totalWin = 0;
+        for (int i = 0; i < foundCount; i++) {
+            totalBet += searchResults[i].betAmount;
+            totalWin += searchResults[i].winAmount;
+        }
+        
+        printf("\n=== %s님의 게임 통계 ===\n", searchNickname);
+        printf("총 게임 수: %d\n", foundCount);
+        printf("총 베팅 금액: %d\n", totalBet);
+        printf("총 획득 금액: %d\n", totalWin);
+        printf("순손익: %s%d\n", (totalWin - totalBet >= 0) ? "+" : "", totalWin - totalBet);
+        
+    } else {
+        printf("\n'%s' 닉네임의 게임 기록이 존재하지 않습니다.\n", searchNickname);
+        printf("없는 닉네임이거나 아직 게임을 플레이하지 않았습니다.\n");
     }
 }

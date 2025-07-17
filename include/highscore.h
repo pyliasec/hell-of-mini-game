@@ -32,5 +32,6 @@ typedef struct {
 void showHighScoreMenu(void);                              // 하이스코어 메뉴 표시
 void showAllHighScores(void);                              // 전체 하이스코어 표시
 void showGameHighScores(const char* gameName);             // 특정 게임 하이스코어 표시
+void searchByNickname(void);                               // 닉네임별 기록 검색
 
 #endif
