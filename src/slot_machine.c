@@ -101,16 +101,16 @@ void startSlotMachineGame(const char* nickname, int* coins) {
     // 게임 시작 전 코인 저장 (손실 체크용)
     int previousCoins = *coins;
     
-    // 배율 입력받기
-    float multiplier;
-    printf("\n배율을 입력하세요 (%.1f ~ %.1f): ", MIN_MULTIPLIER, MAX_MULTIPLIER);
-    while (scanf("%f", &multiplier) != 1 || multiplier < MIN_MULTIPLIER || multiplier > MAX_MULTIPLIER) {
-        printf("올바른 배율을 입력하세요 (%.1f ~ %.1f): ", MIN_MULTIPLIER, MAX_MULTIPLIER);
-        while (getchar() != '\n'); // 입력 버퍼 클리어
-    }
-    
     int bet = getBet(coins);
     if (bet > 0) {
+        // 배율 입력받기
+        float multiplier;
+        printf("\n배율을 입력하세요 (%.1f ~ %.1f): ", MIN_MULTIPLIER, MAX_MULTIPLIER);
+        while (scanf("%f", &multiplier) != 1 || multiplier < MIN_MULTIPLIER || multiplier > MAX_MULTIPLIER) {
+            printf("올바른 배율을 입력하세요 (%.1f ~ %.1f): ", MIN_MULTIPLIER, MAX_MULTIPLIER);
+            while (getchar() != '\n'); // 입력 버퍼 클리어
+        }
+        
         *coins -= bet;
         int result[3];
         for (int i = 0; i < 3; i++) result[i] = spinReel();

@@ -49,20 +49,20 @@ void startRouletteGame(const char* playerName, int* playerCoins) {
             // 게임 시작 전 코인 저장 (손실 체크용)
             int previousCoins = *playerCoins;
 
-            // 배율 입력받기
-            float multiplier;
-            printf("\n배율을 입력하세요 (%.1f ~ %.1f): ", MIN_MULTIPLIER, MAX_MULTIPLIER);
-            while (scanf("%f", &multiplier) != 1 || multiplier < MIN_MULTIPLIER || multiplier > MAX_MULTIPLIER) {
-                printf("올바른 배율을 입력하세요 (%.1f ~ %.1f): ", MIN_MULTIPLIER, MAX_MULTIPLIER);
-                while (getchar() != '\n'); // 입력 버퍼 클리어
-            }
-
             int bet;
             printf("배팅할 금액 (5~1000): ");
             scanf("%d", &bet);
             if (bet < 5 || bet > 1000 || bet > *playerCoins) {
                 printf("유효하지 않은 배팅 금액입니다.\n");
                 continue;
+            }
+
+            // 배율 입력받기
+            float multiplier;
+            printf("\n배율을 입력하세요 (%.1f ~ %.1f): ", MIN_MULTIPLIER, MAX_MULTIPLIER);
+            while (scanf("%f", &multiplier) != 1 || multiplier < MIN_MULTIPLIER || multiplier > MAX_MULTIPLIER) {
+                printf("올바른 배율을 입력하세요 (%.1f ~ %.1f): ", MIN_MULTIPLIER, MAX_MULTIPLIER);
+                while (getchar() != '\n'); // 입력 버퍼 클리어
             }
 
             int chosenNum;
