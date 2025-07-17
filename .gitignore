@@ -1,0 +1,22 @@
+# Compiled binaries
+build/
+*.o
+*.exe
+*.out
+
+# Data files (optional - remove if you want to track game data)
+data/*.csv
+
+# IDE files
+.vscode/
+.DS_Store
+
+# Temporary files
+*.tmp
+*.log
+
+# Dependencies
+node_modules/
+
+# OS generated files
+Thumbs.db
