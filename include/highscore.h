@@ -1,15 +1,36 @@
+/*
+ * ============================================================================
+ * 파일명: highscore.h
+ * 설명: 하이스코어 보드를 위한 헤더 파일
+ * 작성자: pyliasec
+ * 작성일: 2025-07-17
+ * ============================================================================
+ */
+
 #ifndef HIGHSCORE_H
 #define HIGHSCORE_H
 
+/*
+ * ============================================================================
+ * 필수 기능: 구조체 사용
+ * 게임 기록을 저장하는 구조체
+ * ============================================================================
+ */
 typedef struct {
-    char nickname[50];
-    char game[20];
-    int betAmount;
-    int winAmount;
+    char nickname[50];  // 플레이어 닉네임
+    char game[20];      // 게임 이름
+    int betAmount;      // 배팅 금액
+    int winAmount;      // 획득 금액
 } HighScoreRecord;
 
-void showHighScoreMenu(void);
-void showAllHighScores(void);
-void showGameHighScores(const char* gameName);
+/*
+ * ============================================================================
+ * 필수 기능: 메뉴 제공 기능, 검색 기능
+ * 하이스코어 관련 함수들
+ * ============================================================================
+ */
+void showHighScoreMenu(void);                              // 하이스코어 메뉴 표시
+void showAllHighScores(void);                              // 전체 하이스코어 표시
+void showGameHighScores(const char* gameName);             // 특정 게임 하이스코어 표시
 
 #endif

@@ -1,31 +1,36 @@
+/*
+ * ============================================================================
+ * 파일명: player.h
+ * 설명: 플레이어 데이터 관리를 위한 헤더 파일
+ * 작성자: pyliasec
+ * 작성일: 2025-07-17
+ * ============================================================================
+ */
+
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#define MAX_NAME_LEN 50
+#define MAX_NAME_LEN 50  // 플레이어 닉네임 최대 길이
 
+/*
+ * ============================================================================
+ * 필수 기능: 구조체 사용
+ * Player 구조체 - 플레이어의 기본 정보를 저장
+ * ============================================================================
+ */
 typedef struct {
-    char nickname[MAX_NAME_LEN];  // 로그인 시 입력한 닉네임
-    int coins;                    // 현재 보유 코인
+    char nickname[MAX_NAME_LEN];  // 플레이어 닉네임
+    int coins;                    // 보유 코인 수
 } Player;
 
-int loadPlayer(Player* p, const char* name);
-void savePlayer(const Player* p);
-void printPlayerInfo(const Player* p);
+/*
+ * ============================================================================
+ * 필수 기능: 데이터 입력/출력 관련 함수 선언
+ * ============================================================================
+ */
+int loadPlayer(Player* p, const char* name);   // 파일에서 플레이어 데이터 로드
+void savePlayer(const Player* p);              // 플레이어 데이터를 파일에 저장
+void printPlayerInfo(const Player* p);         // 플레이어 정보 출력
 
 #endif
-
-// #ifndef PLAYER_H
-// #define PLAYER_H
-
-// #define MAX_NAME_LEN 50
-
-// typedef struct {
-//     char nickname[MAX_NAME_LEN];
-//     int coins;
-// } Player;
-
-// int loadPlayer(Player* p, const char* name);
-// void savePlayer(const Player* p);
-// void printPlayerInfo(const Player* p);
-
 // #endif

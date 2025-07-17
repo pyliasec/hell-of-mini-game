@@ -1,3 +1,17 @@
+/*
+ * ============================================================================
+ * 파일명: auth.c
+ * 설명: 사용자 인증 시스템 모듈
+ * 작성자: pyliasec
+ * 작성일: 2025-07-17
+ * 
+ * 주요 기능:
+ * - 사용자 로그인/회원가입
+ * - 패스워드 해시화 (SHA256)
+ * - 사용자 데이터 파일 관리
+ * ============================================================================
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -5,10 +19,19 @@
 #include <openssl/sha.h>
 #include "auth.h"
 
-#define MAX_PASS_LEN 50
-#define USER_FILE "../data/users.csv"
+#define MAX_PASS_LEN 50                    // 패스워드 최대 길이
+#define USER_FILE "../data/users.csv"      // 부가 기능: 파일로 사용자 데이터 관리
 
-// SHA256 해시 함수
+/*
+ * ============================================================================
+ * 필수 기능: 데이터 입력/출력
+ * SHA256 해시 함수를 사용하여 패스워드를 암호화
+ * 
+ * 매개변수:
+ *   password - 암호화할 패스워드
+ *   hashOutput - 해시 결과를 저장할 버퍼
+ * ============================================================================
+ */
 void hashPassword(const char* password, char* hashOutput) {
     unsigned char hash[SHA256_DIGEST_LENGTH];
     SHA256((unsigned char*)password, strlen(password), hash);
@@ -18,11 +41,24 @@ void hashPassword(const char* password, char* hashOutput) {
     hashOutput[64] = '\0';
 }
 
-// 닉네임 존재 여부 확인
+/*
+ * ============================================================================
+ * 필수 기능: 검색 기능
+ * 파일에서 특정 닉네임을 검색하여 존재 여부를 확인
+ * 
+ * 매개변수:
+ *   nickname - 검색할 닉네임
+ * 
+ * 반환값:
+ *   true - 사용자 존재, false - 사용자 없음
+ * ============================================================================
+ */
 bool checkUserExists(const char* nickname) {
     FILE* f = fopen(USER_FILE, "r");
     if (!f) return false;
     char line[200];
+    
+    // 파일을 한 줄씩 읽어가며 닉네임 검색
     while (fgets(line, sizeof(line), f)) {
         char storedNick[MAX_NAME_LEN];
         sscanf(line, "%[^,]", storedNick);

@@ -1,3 +1,17 @@
+/*
+ * ============================================================================
+ * 파일명: slot_machine.c
+ * 설명: 슬롯머신 게임 모듈
+ * 작성자: pyliasec
+ * 작성일: 2025-07-17
+ * 
+ * 주요 기능:
+ * - 가중치 기반 심볼 선택
+ * - 베팅 시스템
+ * - 게임 기록 저장
+ * ============================================================================
+ */
+
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,15 +19,33 @@
 #include <string.h>
 #include "player.h"
 
-#define NUM_SYMBOLS 6
-#define MIN_BET      5
-#define MAX_BET   1000
-#define RECORD_FILE "../data/slot_records.csv"
+#define NUM_SYMBOLS 6         // 심볼 종류 개수
+#define MIN_BET      5        // 최소 베팅 금액
+#define MAX_BET   1000        // 최대 베팅 금액
+#define RECORD_FILE "../data/slot_records.csv"  // 부가 기능: 파일로 데이터 관리
 
+/*
+ * ============================================================================
+ * 필수 기능: 구조체 사용
+ * 슬롯머신 게임 데이터
+ * ============================================================================
+ */
 const char* symbols[NUM_SYMBOLS] = { "♠", "♥", "◆", "★", "♣", "♡" };
-int weights[NUM_SYMBOLS] = { 30, 25, 20, 15, 7, 3 };
-int payout3[NUM_SYMBOLS] = { 3, 4, 5, 10, 15, 20 };
-int payout2[NUM_SYMBOLS] = { 1, 2, 2, 5, 7, 10 };
+int weights[NUM_SYMBOLS] = { 30, 25, 20, 15, 7, 3 };     // 각 심볼의 출현 가중치
+int payout3[NUM_SYMBOLS] = { 3, 4, 5, 10, 15, 20 };      // 3개 일치 시 배당률
+int payout2[NUM_SYMBOLS] = { 1, 2, 2, 5, 7, 10 };        // 2개 일치 시 배당률
+
+/*
+ * ============================================================================
+ * 필수 기능: 동적 메모리 사용을 위한 구조체
+ * 슬롯머신 게임 결과를 저장하는 구조체
+ * ============================================================================
+ */
+typedef struct {
+    int reel1, reel2, reel3;  // 각 릴의 결과
+    int betAmount;            // 베팅 금액
+    int winAmount;            // 획득 금액
+} SlotResult;
 
 // 함수 프로토타입
 void slotMachineMenu(const char* nickname, int* coins);
@@ -22,7 +54,14 @@ int getBet(int* coins);
 int spinReel(void);
 void saveSlotRecord(const char* nickname, int bet, int result0, int result1, int result2, int winAmount);
 void showSlotHistory(const char* nickname);
+SlotResult* createSlotResult(int r1, int r2, int r3, int bet, int win);  // 필수 기능: 동적 메모리 함수
 
+/*
+ * ============================================================================
+ * 필수 기능: 메뉴 제공 기능
+ * 슬롯머신 게임 메뉴를 표시하고 처리하는 함수
+ * ============================================================================
+ */
 void slotMachineMenu(const char* nickname, int* coins) {
     int choice = 0;
     while (choice != -1) {
@@ -164,6 +203,50 @@ void showSlotHistory(const char* nickname) {
     }
     
     fclose(f);
+}
+
+/*
+ * ============================================================================
+ * 필수 기능: 동적 메모리 사용
+ * 슬롯머신 게임 결과를 동적으로 할당하는 함수
+ * 
+ * 매개변수:
+ *   r1, r2, r3 - 각 릴의 결과
+ *   bet - 베팅 금액
+ *   win - 획득 금액
+ * 
+ * 반환값:
+ *   동적으로 할당된 SlotResult 구조체 포인터
+ * ============================================================================
+ */
+SlotResult* createSlotResult(int r1, int r2, int r3, int bet, int win) {
+    // 동적 메모리 할당
+    SlotResult* result = (SlotResult*)malloc(sizeof(SlotResult));
+    
+    if (result != NULL) {
+        result->reel1 = r1;
+        result->reel2 = r2;
+        result->reel3 = r3;
+        result->betAmount = bet;
+        result->winAmount = win;
+    }
+    
+    return result;
+}
+
+/*
+ * ============================================================================
+ * 필수 기능: 동적 메모리 사용
+ * 동적으로 할당된 메모리를 해제하는 함수
+ * 
+ * 매개변수:
+ *   result - 해제할 SlotResult 구조체 포인터
+ * ============================================================================
+ */
+void freeSlotResult(SlotResult* result) {
+    if (result != NULL) {
+        free(result);  // 동적 메모리 해제
+    }
 }
 
 

@@ -1,9 +1,24 @@
+/*
+ * ============================================================================
+ * 파일명: auth.h
+ * 설명: 사용자 인증 시스템을 위한 헤더 파일
+ * 작성자: pyliasec
+ * 작성일: 2025-07-17
+ * ============================================================================
+ */
+
 #ifndef AUTH_H
 #define AUTH_H
 
-#define MAX_NAME_LEN 50
+#define MAX_NAME_LEN 50  // 사용자 닉네임 최대 길이
 
-void promptLoginFlow(char* outNickname);
-void promptRegisterFlow(char* outNickname);
+/*
+ * ============================================================================
+ * 필수 기능: 데이터 입력/출력, 메뉴 제공 기능
+ * 사용자 인증 관련 함수들
+ * ============================================================================
+ */
+void promptLoginFlow(char* outNickname);     // 로그인 처리 함수
+void promptRegisterFlow(char* outNickname);  // 회원가입 처리 함수
 
 #endif

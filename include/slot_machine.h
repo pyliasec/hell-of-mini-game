@@ -1,9 +1,24 @@
+/*
+ * ============================================================================
+ * 파일명: slot_machine.h
+ * 설명: 슬롯머신 게임을 위한 헤더 파일
+ * 작성자: pyliasec
+ * 작성일: 2025-07-17
+ * ============================================================================
+ */
+
 #ifndef SLOT_MACHINE_H
 #define SLOT_MACHINE_H
 
 #include "player.h"
 
-void slotMachineMenu(const char* nickname, int* coins);
-void startSlotMachineGame(const char* nickname, int* coins);
+/*
+ * ============================================================================
+ * 필수 기능: 메뉴 제공 기능
+ * 슬롯머신 게임 관련 함수들
+ * ============================================================================
+ */
+void slotMachineMenu(const char* nickname, int* coins);      // 슬롯머신 메뉴 표시
+void startSlotMachineGame(const char* nickname, int* coins); // 슬롯머신 게임 실행
 
 #endif

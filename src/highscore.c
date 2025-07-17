@@ -1,29 +1,53 @@
+/*
+ * ============================================================================
+ * 파일명: highscore.c
+ * 설명: 하이스코어 보드 관리 모듈
+ * 작성자: pyliasec
+ * 작성일: 2025-07-17
+ * 
+ * 주요 기능:
+ * - 모든 게임의 기록 통합 관리
+ * - 정렬 및 검색 기능
+ * - 페이지네이션을 통한 데이터 표시
+ * ============================================================================
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "highscore.h"
 
-#define MAX_RECORDS 1000
-#define RECORDS_PER_PAGE 5
+#define MAX_RECORDS 1000      // 최대 기록 수
+#define RECORDS_PER_PAGE 5    // 페이지당 표시할 기록 수
 
-// 모든 게임 기록 파일들
+/*
+ * ============================================================================
+ * 부가 기능: 데이터 관리를 파일로 처리
+ * 모든 게임 기록 파일들의 경로
+ * ============================================================================
+ */
 const char* gameFiles[] = {
-    "../data/slot_records.csv",
-    "../data/horse_records.csv", 
-    "../data/rock_records.csv",
-    "../data/roulette_history.csv"
+    "../data/slot_records.csv",     // 슬롯머신 기록
+    "../data/horse_records.csv",    // 경마 기록
+    "../data/rock_records.csv",     // 가위바위보 기록
+    "../data/roulette_history.csv"  // 룰렛 기록
 };
 
 const char* gameNames[] = {
     "슬롯머신",
-    "경마",
+    "경마", 
     "가위바위보",
     "룰렛"
 };
 
 const int numGames = 4;
 
-// 함수 프로토타입
+/*
+ * ============================================================================
+ * 필수 기능: 데이터 입력/출력
+ * 각 게임별 기록 로드 함수들의 프로토타입
+ * ============================================================================
+ */
 int loadSlotRecords(HighScoreRecord records[], int maxRecords);
 int loadHorseRecords(HighScoreRecord records[], int maxRecords);
 int loadRockRecords(HighScoreRecord records[], int maxRecords);
@@ -222,9 +246,21 @@ int loadAllRecords(HighScoreRecord records[], int maxRecords) {
     return totalCount;
 }
 
+/*
+ * ============================================================================
+ * 필수 기능: 정렬 기능
+ * 버블 정렬을 사용하여 기록을 획득 금액 기준 내림차순으로 정렬
+ * 
+ * 매개변수:
+ *   records - 정렬할 기록 배열
+ *   count - 기록의 개수
+ * ============================================================================
+ */
 void sortRecordsByWinAmount(HighScoreRecord records[], int count) {
+    // 버블 정렬 알고리즘 구현 (내림차순)
     for (int i = 0; i < count - 1; i++) {
         for (int j = 0; j < count - i - 1; j++) {
+            // 획득 금액을 기준으로 비교하여 정렬
             if (records[j].winAmount < records[j + 1].winAmount) {
                 HighScoreRecord temp = records[j];
                 records[j] = records[j + 1];
