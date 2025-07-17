@@ -153,19 +153,19 @@ The game automatically creates and manages these CSV files in the `data/` direct
 
 This project was specifically designed as an **educational tool for gambling addiction prevention**. Key educational features include:
 
-### 🛡️ Prevention Systems
+### Prevention Systems
 - **Major Loss Detection**: Automatic alerts when significant losses occur
 - **Bankruptcy Warnings**: Critical alerts when coin balance drops to ≤10
 - **Educational Messaging**: Informative content about gambling risks and addiction
 - **Post-Game Timing**: Prevention messages appear after gameplay completion for maximum educational impact
 
-### 📚 Learning Objectives
+### Learning Objectives
 - Understanding the mathematical disadvantage in gambling
 - Recognizing patterns of addictive behavior
 - Learning about risk management and probability
 - Promoting responsible decision-making regarding gambling
 
-### 🎯 Target Audience
+### Target Audience
 - Students learning about probability and statistics
 - Individuals seeking to understand gambling risks
 - Educational institutions teaching about addiction prevention
