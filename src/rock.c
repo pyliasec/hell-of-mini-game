@@ -49,6 +49,14 @@ void rockPaperScissorsMenu(const char* nickname, int* coins) {
 void startRockPaperScissorsGame(const char* nickname, int* coins) {
     srand((unsigned)time(NULL));
     
+    // 배율 입력받기
+    float multiplier;
+    printf("\n배율을 입력하세요 (예: 1.5, 2.0, 0.5): ");
+    while (scanf("%f", &multiplier) != 1 || multiplier <= 0) {
+        printf("올바른 배율을 입력하세요 (양수): ");
+        while (getchar() != '\n'); // 입력 버퍼 클리어
+    }
+    
     int bet = getBetAmount(coins);
     if (bet == 0) return;
     
@@ -82,13 +90,14 @@ void startRockPaperScissorsGame(const char* nickname, int* coins) {
     else if ((user == 1 && computer == 3) ||
              (user == 2 && computer == 1) ||
              (user == 3 && computer == 2)) {
-        printf("승리! %d 코인을 획득했습니다!\n", bet * 2);
+        // 승리 시 설정된 배율 적용
+        winAmount = (int)(bet * multiplier * 2);
+        printf("🏆 승리! 배율 %.1fx 적용 → +%d 코인\n", multiplier, winAmount);
         result = 1;
-        winAmount = bet * 2;
         *coins += winAmount;
     }
     else {
-        printf("패배! 베팅 금액을 잃었습니다.\n");
+        printf("💸 패배! 베팅 금액을 잃었습니다.\n");
         result = 2;
         winAmount = 0;
     }

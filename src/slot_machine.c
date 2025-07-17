@@ -94,6 +94,15 @@ void slotMachineMenu(const char* nickname, int* coins) {
 
 void startSlotMachineGame(const char* nickname, int* coins) {
     srand((unsigned)time(NULL));
+    
+    // 배율 입력받기
+    float multiplier;
+    printf("\n배율을 입력하세요 (예: 1.5, 2.0, 0.5): ");
+    while (scanf("%f", &multiplier) != 1 || multiplier <= 0) {
+        printf("올바른 배율을 입력하세요 (양수): ");
+        while (getchar() != '\n'); // 입력 버퍼 클리어
+    }
+    
     int bet = getBet(coins);
     if (bet > 0) {
         *coins -= bet;
@@ -105,18 +114,18 @@ void startSlotMachineGame(const char* nickname, int* coins) {
         
         int winAmount = 0;
         if (result[0] == result[1] && result[1] == result[2]) {
-            int multiplier = payout3[result[0]];
-            winAmount = bet * multiplier;
-            printf("3개 일치 (%dx) → +%d 코인\n", multiplier, winAmount);
+            // 3개 일치 시 설정된 배율 적용
+            winAmount = (int)(bet * multiplier * payout3[result[0]]);
+            printf("🎰 3개 일치! 배율 %.1fx 적용 → +%d 코인\n", multiplier, winAmount);
             *coins += winAmount;
         }
         else if (result[0] == result[1] || result[1] == result[2] || result[0] == result[2]) {
             int idx = (result[0] == result[1] ? result[0]
                 : result[1] == result[2] ? result[1]
                 : result[0]);
-            int multiplier = payout2[idx];
-            winAmount = bet * multiplier;
-            printf("✨ 2개 일치 (%dx) → +%d 코인\n", multiplier, winAmount);
+            // 2개 일치 시 설정된 배율 적용
+            winAmount = (int)(bet * multiplier * payout2[idx]);
+            printf("✨ 2개 일치! 배율 %.1fx 적용 → +%d 코인\n", multiplier, winAmount);
             *coins += winAmount;
         }
         else {

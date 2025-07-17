@@ -43,6 +43,14 @@ void startRouletteGame(const char* playerName, int* playerCoins) {
                 continue;
             }
 
+            // 배율 입력받기
+            float multiplier;
+            printf("\n배율을 입력하세요 (예: 1.5, 2.0, 0.5): ");
+            while (scanf("%f", &multiplier) != 1 || multiplier <= 0) {
+                printf("올바른 배율을 입력하세요 (양수): ");
+                while (getchar() != '\n'); // 입력 버퍼 클리어
+            }
+
             int bet;
             printf("배팅할 금액 (5~1000): ");
             scanf("%d", &bet);
@@ -77,11 +85,14 @@ void startRouletteGame(const char* playerName, int* playerCoins) {
 
             int payout = 0;
             if (game.chosenNumber == resultNum) {
-                payout = game.betAmount * 36;
-                printf("숫자 일치! 36배 당첨!\n");
+                // 숫자 일치 시 설정된 배율 적용
+                payout = (int)(game.betAmount * multiplier * 36);
+                printf("🎯 숫자 일치! 배율 %.1fx 적용 → +%d 코인\n", multiplier, payout);
             } else if (game.chosenColor == resultColor) {
-                payout = game.betAmount * (resultColor == GREEN ? 10 : 2);
-                printf("색상 일치! %dx 당첨!\n", (resultColor == GREEN ? 10 : 2));
+                // 색상 일치 시 설정된 배율 적용
+                int baseMultiplier = (resultColor == GREEN ? 10 : 2);
+                payout = (int)(game.betAmount * multiplier * baseMultiplier);
+                printf("🎨 색상 일치! 배율 %.1fx 적용 → +%d 코인\n", multiplier, payout);
             } else {
                 printf("꽝! 배팅한 %d 코인 손실\n", game.betAmount);
             }

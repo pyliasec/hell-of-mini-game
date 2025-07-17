@@ -69,6 +69,14 @@ void startHorseRacingGame(const char* nickname, int* coins) {
     double moveValue[4] = { 0 };
     int winner = 0;
 
+    // 배율 입력받기
+    float multiplier;
+    printf("\n배율을 입력하세요 (예: 1.5, 2.0, 0.5): ");
+    while (scanf("%f", &multiplier) != 1 || multiplier <= 0) {
+        printf("올바른 배율을 입력하세요 (양수): ");
+        while (getchar() != '\n'); // 입력 버퍼 클리어
+    }
+
     printf("\n현재 코인: %d\n", *coins);
     printf("배팅할 코인을 입력하세요 (최소 5 ~ 최대 1000): ");
     scanf("%d", &betCoins);
@@ -114,10 +122,14 @@ void startHorseRacingGame(const char* nickname, int* coins) {
     printf("🏁 %d번 말이 우승했습니다!\n", winner);
     int reward = 0;
     if (horseChoice == winner) {
-        if (winner == 1) reward = 2 * betCoins;
-        else if (winner == 2) reward = 4 * betCoins;
-        else reward = 8 * betCoins;
-        printf("축하합니다! %d 코인을 획득했습니다.\n", reward);
+        // 승리 시 설정된 배율 적용
+        int baseReward;
+        if (winner == 1) baseReward = 2 * betCoins;
+        else if (winner == 2) baseReward = 4 * betCoins;
+        else baseReward = 8 * betCoins;
+        
+        reward = (int)(baseReward * multiplier);
+        printf("🎉 축하합니다! 배율 %.1fx 적용 → +%d 코인 획득!\n", multiplier, reward);
         *coins += reward;
     } else {
         printf("아쉽게도 배팅 실패입니다. 코인을 잃었습니다.\n");
