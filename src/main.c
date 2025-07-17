@@ -148,24 +148,3 @@ int main() {
     savePlayer(&player); // while 루프 종료 후에도 저장
     return 0;
 }
-
-
-
-/*
-
-cd /Users/pyliasec/Documents/hell_of_mini_game && gcc main.c auth.c player.c horse_racing.c roulette.c slot_machine.c rock.c highscore.c \
-  -I/opt/homebrew/opt/openssl/include \
-  -L/opt/homebrew/opt/openssl/lib \
-  -lssl -lcrypto -o hellgame
-
-
-  cd /Users/pyliasec/Documents/hell_of_mini_game && echo "1
-pyliasec
-rlarbqls135
-5
-1
-q
--1
--1" | ./hellgame
-
-*/
